@@ -2,6 +2,7 @@
 version: "3.9"
 
 services:
+  #  third party
   postgres:
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d
@@ -19,3 +20,51 @@ services:
     image: redis:6.2.4-alpine3.13
     ports: 
       - "6379:6379"
+
+  envoy:
+    image: envoyproxy/envoy:v1.16.0
+    ports:
+      - "9901:9901"
+      - "8080:8080"
+    volumes:
+      - ./configs/envoy/envoy.yaml:/etc/envoy/envoy.yaml
+
+  # grpcox: 
+    # image: gusaul/grpcox:latest
+    # ports: 
+      # - "6969:6969"
+
+  # envspotting 
+  envspotting_apps:
+    build:
+      context: https://github.com/badhouseplants/envspotting-gitlab.git#${ENVSPOTTING_APPS}
+    image: envspotting-apps:${ENVSPOTTING_APPS}
+    ports:
+      - "9090:9090"
+    environment:
+      DATABASE_HOTS: postgres 
+      ENVSPOTTING_USERS_HOST: envspotting_users
+      ENVSPOTTING_USERS_PORT: 9091
+
+  envspotting_gitlab:
+    build:
+      context: https://github.com/badhouseplants/envspotting-gitlab.git#${ENVSPOTTING_GITLAB}
+    image: envspotting-gitlab:${ENVSPOTTING_GITLAB}
+    ports:
+      - "7070:7070"
+    environment:
+      DATABASE_HOTS: postgres 
+      ENVSPOTTING_USERS_HOST: envspotting_users
+      ENVSPOTTING_USERS_PORT: 9091
+      ENVSPOTTING_GITLAB_PORT: 7070
+    
+  envspotting_users:
+    build:
+      context: https://github.com/badhouseplants/envspotting-users.git#${ENVSPOTTING_USERS}
+    image: envspotting-users:${ENVSPOTTING_USERS}
+    ports:
+      - "9091:9091"
+    environment:
+      ENVSPOTTING_USERS_PORT: 9091
+      DATABASE_HOST: postgres 
+      REDIS_HOST: "redis:6379"
