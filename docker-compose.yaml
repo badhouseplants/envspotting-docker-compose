@@ -37,7 +37,7 @@ services:
   # envspotting 
   envspotting_apps:
     build:
-      context: https://github.com/badhouseplants/envspotting-gitlab.git#${ENVSPOTTING_APPS}
+      context: https://github.com/badhouseplants/envspotting-apps.git#${ENVSPOTTING_APPS}
     image: envspotting-apps:${ENVSPOTTING_APPS}
     ports:
       - "9090:9090"

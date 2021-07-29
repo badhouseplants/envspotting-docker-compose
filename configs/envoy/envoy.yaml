@@ -21,15 +21,18 @@ static_resources:
                     - name: service
                       domains: ["*"]
                       routes:
-                        - match: { prefix: "/apps" }
+                        - match: 
+                            prefix: "/apps"
                           route:
                             cluster: envspotting_apps
                             max_grpc_timeout: 2s
-                        - match: { prefix: "/users" }
+                        - match: 
+                            prefix: "/users"
                           route:
                             cluster: envspotting_users
                             max_grpc_timeout: 2s
-                        - match: { prefix: "/gitlab" }
+                        - match: 
+                            prefix: "/gitlab"
                           route:
                             cluster: envspotting_gitlab
                             max_grpc_timeout: 2s                      
