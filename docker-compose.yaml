@@ -42,7 +42,7 @@ services:
     ports:
       - "9090:9090"
     environment:
-      DATABASE_HOTS: postgres 
+      DATABASE_HOST: postgres 
       ENVSPOTTING_USERS_HOST: envspotting_users
       ENVSPOTTING_USERS_PORT: 9091
 
